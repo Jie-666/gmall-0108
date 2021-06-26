@@ -14,7 +14,11 @@
     <description>谷粒商城商品管理系统</description>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.atguigu</groupId>
+            <artifactId>gmall-sms-interface</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.atguigu</groupId>
             <artifactId>gmall-common</artifactId>
@@ -36,7 +40,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>

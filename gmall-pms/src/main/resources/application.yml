@@ -36,7 +36,9 @@ mybatis-plus:
       id-type: auto
   type-aliases-package: com.atguigu.gmall.pms.entity
 
-
 feign:
   sentinel:
     enabled: true
+logging:
+  level:
+    com.atguigu.gmall: debug

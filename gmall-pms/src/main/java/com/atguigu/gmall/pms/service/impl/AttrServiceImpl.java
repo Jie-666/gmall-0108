@@ -1,6 +1,8 @@
 package com.atguigu.gmall.pms.service.impl;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,6 +26,24 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
         );
 
         return new PageResultVo(page);
+    }
+
+    @Override
+    public List<AttrEntity> queryAttrsByCidOrTypeOrSearchType(Long cid, Integer type, Integer searchType) {
+        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<>();
+        // 分类id如果为0，查询所有分类的规格参数
+        if (cid != 0) {
+            wrapper.eq("category_id", cid);
+        }
+        // 如果参数类型不为空
+        if (type != null) {
+            wrapper.eq("type", type);
+        }
+        // 如果参数类型不为空
+        if (searchType != null) {
+            wrapper.eq("search_type", searchType);
+        }
+        return this.list(wrapper);
     }
 
 }
