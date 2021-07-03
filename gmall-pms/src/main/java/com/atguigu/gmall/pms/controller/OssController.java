@@ -46,6 +46,7 @@ public class OssController {
             String encodedPolicy = BinaryUtil.toBase64String(binaryData);
             String postSignature = ossClient.calculatePostSignature(postPolicy);
 
+
             Map<String, String> respMap = new LinkedHashMap<String, String>();
             respMap.put("accessid", accessId);
             respMap.put("policy", encodedPolicy);

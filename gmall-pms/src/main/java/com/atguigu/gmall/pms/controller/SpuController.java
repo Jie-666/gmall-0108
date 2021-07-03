@@ -3,6 +3,7 @@ package com.atguigu.gmall.pms.controller;
 import java.util.List;
 
 import com.atguigu.gmall.pms.Vo.SpuVo;
+import com.atguigu.gmall.pms.entity.SpuEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.atguigu.gmall.pms.entity.SpuEntity;
+
 import com.atguigu.gmall.pms.service.SpuService;
 import com.atguigu.gmall.common.bean.PageResultVo;
 import com.atguigu.gmall.common.bean.ResponseVo;
@@ -51,6 +52,14 @@ public class SpuController {
         PageResultVo pageResultVo = spuService.queryPage(paramVo);
 
         return ResponseVo.ok(pageResultVo);
+    }
+
+    @PostMapping("page")
+    @ApiOperation("搜索功能远程调用")
+    public ResponseVo<List<SpuEntity>> querySpuByPageJson(@RequestBody PageParamVo paramVo){
+        PageResultVo pageResultVo = spuService.queryPage(paramVo);
+
+        return ResponseVo.ok((List<SpuEntity>)pageResultVo.getList());
     }
 
 

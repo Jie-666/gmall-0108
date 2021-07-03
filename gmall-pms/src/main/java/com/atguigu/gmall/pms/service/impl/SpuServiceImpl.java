@@ -9,10 +9,9 @@ import com.atguigu.gmall.pms.entity.*;
 import com.atguigu.gmall.pms.feign.GmallSmsClient;
 import com.atguigu.gmall.pms.mapper.SkuMapper;
 import com.atguigu.gmall.pms.mapper.SpuDescMapper;
-import com.atguigu.gmall.pms.service.SkuAttrValueService;
-import com.atguigu.gmall.pms.service.SkuImagesService;
-import com.atguigu.gmall.pms.service.SpuAttrValueService;
+import com.atguigu.gmall.pms.service.*;
 import com.atguigu.gmall.sms.vo.SkuSaleVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +27,15 @@ import com.atguigu.gmall.common.bean.PageResultVo;
 import com.atguigu.gmall.common.bean.PageParamVo;
 
 import com.atguigu.gmall.pms.mapper.SpuMapper;
-import com.atguigu.gmall.pms.service.SpuService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 
 @Service("spuService")
 public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements SpuService {
     @Autowired
-    private SpuDescMapper spuDescMapper;
+    private SpuDescService descService;
     @Autowired
     private SpuAttrValueService spuAttrValueService;
     @Autowired
@@ -78,42 +78,29 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
         return new PageResultVo(page);
     }
 
+    @GlobalTransactional
     @Override
     public void bigSave(SpuVo spu) {
         //1.保存spu相关的3张表
         //1.1.保存pms_spu
-        spu.setCreateTime(new Date());
-        spu.setUpdateTime(spu.getCreateTime()); // 新增时，更新时间和创建时间一致
-        this.save(spu);
-        Long spuId = spu.getId();// 获取新增后的spuId
+        Long spuId = saveSpuInfo(spu);
 
         //1.2.保存pms_spu_desc
-        List<String> spuImages = spu.getSpuImages();
-        if (!CollectionUtils.isEmpty(spuImages)) {
-            SpuDescEntity spuDescEntity = new SpuDescEntity();
-            spuDescEntity.setSpuId(spuId);
-            spuDescEntity.setDecript(StringUtils.join(spuImages, ","));
-            spuDescMapper.insert(spuDescEntity);
-        }
+        //saveSpuDesc(spu, spuId);
+        this.descService.saveSpuDesc(spu, spuId);
 
+
+        // int i = 1/0;
         //1.3.保存pms_spu_attr_value
-        List<SpuAttrValueVo> baseAttrs = spu.getBaseAttrs();
-
-        if (!CollectionUtils.isEmpty(baseAttrs)) {
-            //将SpuAttrValueVo 转换为 SpuAttrValueEntity 集合
-            List<SpuAttrValueEntity> spuAttrValueEntities = baseAttrs.stream()
-                    .filter(spuAttrValueVo -> spuAttrValueVo.getAttrValue() != null)
-                    .map(spuAttrValueVo -> {
-                        SpuAttrValueEntity spuAttrValueEntity = new SpuAttrValueEntity();
-                        BeanUtils.copyProperties(spuAttrValueVo, spuAttrValueEntity);
-                        spuAttrValueEntity.setSpuId(spuId);
-                        return spuAttrValueEntity;
-                    }).collect(Collectors.toList());
-            this.spuAttrValueService.saveBatch(spuAttrValueEntities);
-
-        }
+        saveBaseAttrs(spu, spuId);
 
         //2.保存sku相关的3张表
+        saveSkuInfo(spu, spuId);
+
+
+    }
+
+    private void saveSkuInfo(SpuVo spu, Long spuId) {
         List<SkuVo> skus = spu.getSkus();
         if (CollectionUtils.isEmpty(skus)) {
             return;
@@ -147,7 +134,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
 
             //2.3.保存pms_sku_attr_value
             List<SkuAttrValueEntity> saleAttrs = skuVo.getSaleAttrs();
-            if (!CollectionUtils.isEmpty(saleAttrs)){
+            if (!CollectionUtils.isEmpty(saleAttrs)) {
                 saleAttrs.forEach(skuAttrValueEntity -> {
                     skuAttrValueEntity.setSkuId(skuId);
                 });
@@ -165,8 +152,33 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
 
 
         });
+    }
+
+    private void saveBaseAttrs(SpuVo spu, Long spuId) {
+        List<SpuAttrValueVo> baseAttrs = spu.getBaseAttrs();
+
+        if (!CollectionUtils.isEmpty(baseAttrs)) {
+            //将SpuAttrValueVo 转换为 SpuAttrValueEntity 集合
+            List<SpuAttrValueEntity> spuAttrValueEntities = baseAttrs.stream()
+                    .filter(spuAttrValueVo -> spuAttrValueVo.getAttrValue() != null)
+                    .map(spuAttrValueVo -> {
+                        SpuAttrValueEntity spuAttrValueEntity = new SpuAttrValueEntity();
+                        BeanUtils.copyProperties(spuAttrValueVo, spuAttrValueEntity);
+                        spuAttrValueEntity.setSpuId(spuId);
+                        return spuAttrValueEntity;
+                    }).collect(Collectors.toList());
+            this.spuAttrValueService.saveBatch(spuAttrValueEntities);
+
+        }
+    }
 
 
+    private Long saveSpuInfo(SpuVo spu) {
+        spu.setCreateTime(new Date());
+        spu.setUpdateTime(spu.getCreateTime()); // 新增时，更新时间和创建时间一致
+        this.save(spu);
+        Long spuId = spu.getId();// 获取新增后的spuId
+        return spuId;
     }
 
 //    public static void main(String[] args) {
