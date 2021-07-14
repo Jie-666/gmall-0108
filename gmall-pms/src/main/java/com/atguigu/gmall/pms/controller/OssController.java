@@ -22,8 +22,8 @@ public class OssController {
 
     @GetMapping("policy")
     public ResponseVo<Object> policy() {
-        String accessId = "LTAI5tGLjd3BNL2Jr4rJrLk8"; // 请填写您的AccessKeyId。
-        String accessKey = "tPunP74MDk8OcEjPzQzHyaeOk9D5F9"; // 请填写您的AccessKeySecret。
+        String accessId = ""; // 请填写您的AccessKeyId。
+        String accessKey = ""; // 请填写您的AccessKeySecret。
         String endpoint = "oss-cn-shanghai.aliyuncs.com"; // 请填写您的 endpoint。
         String bucket = "gmall-0108"; // 请填写您的 bucketname 。
         String host = "https://" + bucket + "." + endpoint; // host的格式为 bucketname.endpoint
