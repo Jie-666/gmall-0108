@@ -35,6 +35,7 @@ public class SkuController {
     @Autowired
     private SkuService skuService;
 
+
     @ApiOperation("spu下的sku集合")
     @GetMapping("spu/{spuId}")
     public ResponseVo<List<SkuEntity>> querySkusBySpuId(@PathVariable("spuId") Long spuId) {

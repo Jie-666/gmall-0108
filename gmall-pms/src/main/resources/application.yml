@@ -28,6 +28,15 @@ spring:
   redis:
     host: 192.168.125.128
     port: 6379
+  rabbitmq:
+    host: 192.168.125.128
+    port: 5672
+    virtual-host: /jiege
+    username: jiege
+    password: root
+    #确认消息是否到达对列
+    publisher-returns: true
+
 
 
 

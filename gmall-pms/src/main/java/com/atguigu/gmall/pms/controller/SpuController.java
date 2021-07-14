@@ -3,6 +3,7 @@ package com.atguigu.gmall.pms.controller;
 import java.util.List;
 
 import com.atguigu.gmall.pms.Vo.SpuVo;
+import com.atguigu.gmall.pms.entity.SpuDescEntity;
 import com.atguigu.gmall.pms.entity.SpuEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +36,8 @@ public class SpuController {
 
     @Autowired
     private SpuService spuService;
+
+
 
     @ApiOperation("根据检索条件分页查询商品列表")
     @GetMapping("category/{categoryId}")

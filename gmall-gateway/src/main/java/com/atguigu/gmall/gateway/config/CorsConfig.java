@@ -12,6 +12,10 @@ public class CorsConfig {
     public CorsWebFilter corsWebFilter(){
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://manager.gmall.com");
+        config.addAllowedOrigin("http://localhost:1000");
+        config.addAllowedOrigin("http://gmall.com");
+        config.addAllowedOrigin("http://www.gmall.com");
+        config.addAllowedOrigin("http://item.gmall.com");
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);

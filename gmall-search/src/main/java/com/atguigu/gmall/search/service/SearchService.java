@@ -51,7 +51,7 @@ public class SearchService {
 
         try {
             SearchResponse response = this.restHighLevelClient.search(new SearchRequest(new String[]{"goods"}, builder(paramVo)), RequestOptions.DEFAULT);
-            System.out.println(response);
+//            System.out.println(response);
 
             //分页参数在请求参数中
             SearchResponseVo responseVo = this.parseResult(response);
@@ -201,7 +201,7 @@ public class SearchService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         sourceBuilder.query(boolQueryBuilder);
         //1.1 匹配查询
-        boolQueryBuilder.must(QueryBuilders.matchQuery("title", keyword).operator(Operator.AND));
+        boolQueryBuilder.must(QueryBuilders.matchQuery("title", keyword).operator(Operator.OR));
         //1.2 过滤
         //1.2.1 品牌过滤
         List<Long> brandId = paramVo.getBrandId();
@@ -308,6 +308,9 @@ public class SearchService {
                         )
 
         );
+
+        //6.结果集过滤
+        sourceBuilder.fetchSource(new String[]{"skuId","title","subTitle","price","defaultImage"},null);
 
 
         System.out.println(sourceBuilder);

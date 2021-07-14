@@ -27,5 +27,22 @@ spring:
           uri: lb://oms-service
           predicates:
             - Path=/oms/**
+        - id: search-route
+          uri: lb://search-service
+          predicates:
+            - Host=search.gmall.com
+        - id: index-route #同步请求路由
+          uri: lb://index-service
+          predicates:
+            - Host=gmall.com, www.gmall.com
+        - id: index-route2 #异步请求路由：只能通过路径的方式路由（api.gmall.com）
+          uri: lb://index-service
+          predicates:
+            - Path=/index/**
+        - id: item-route
+          uri: lb://item-service
+          predicates:
+            - Host=item.gmall.com
+
 
 
