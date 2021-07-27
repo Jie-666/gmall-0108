@@ -41,6 +41,12 @@ public class UserController {
     }
 
 
+    /**
+     * 查询用户在数据库中是否存在，校验用户登录时的账号密码是否正确
+     * @param loginName
+     * @param password
+     * @return
+     */
     @GetMapping("query")
     public ResponseVo<UserEntity> queryUser(
             @RequestParam("loginName")String loginName,

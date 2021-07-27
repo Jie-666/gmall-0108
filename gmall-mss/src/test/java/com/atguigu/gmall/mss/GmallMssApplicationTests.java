@@ -1,6 +1,6 @@
 package com.atguigu.gmall.mss;
 
-import com.atguigu.gmall.common.utils.HttpUtils;
+import com.atguigu.gmall.mss.utils.HttpUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.Test;

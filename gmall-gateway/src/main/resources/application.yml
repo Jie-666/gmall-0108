@@ -35,6 +35,9 @@ spring:
           uri: lb://index-service
           predicates:
             - Host=gmall.com, www.gmall.com
+          filters:
+            - AddResponseHeader=xxx,yyyy
+            - Auth=/
         - id: index-route2 #异步请求路由：只能通过路径的方式路由（api.gmall.com）
           uri: lb://index-service
           predicates:
@@ -43,6 +46,30 @@ spring:
           uri: lb://item-service
           predicates:
             - Host=item.gmall.com
-
+        - id: auth-route
+          uri: lb://auth-service
+          predicates:
+            - Host=sso.gmall.com
+        - id: cart-route
+          uri: lb://cart-service
+          predicates:
+            - Host=cart.gmall.com
+        - id: order-route
+          uri: lb://order-service
+          predicates:
+            - Host=order.gmall.com
+          filters:
+            - Auth=/
+        - id: payment-route
+          uri: lb://payment-service
+          predicates:
+            - Host=payment.gmall.com
+          filters:
+            - Auth=/pay.html
+#JWT配置
+jwt:
+  pubFilePath: E:\1130尚硅谷\01_谷粒商城0108\project\rsa.pub
+  cookieName: GMALL-TOKEN
+  token: token
 
 

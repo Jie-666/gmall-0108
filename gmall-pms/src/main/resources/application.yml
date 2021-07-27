@@ -36,6 +36,8 @@ spring:
     password: root
     #确认消息是否到达对列
     publisher-returns: true
+    #发布者确认
+    publisher-confirm-type: correlated
 
 
 

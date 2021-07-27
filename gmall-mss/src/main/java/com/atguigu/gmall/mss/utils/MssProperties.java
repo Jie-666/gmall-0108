@@ -9,20 +9,20 @@ import org.springframework.stereotype.Component;
 
 
 @Data
-@Configuration
+@Component
 //注意prefix要写到最后一个 "." 符号之前
-@ConfigurationProperties(prefix="aliyun.mms")
+@ConfigurationProperties(prefix="aliyun.mss")
 public class MssProperties {
-    //@Value("${aliyun.mms.appSecret}")
+
     public static String appSecret;//
-    //@Value("${aliyun.mms.appCode}")
+
     public static String appCode;//
-    //@Value("${aliyun.mms.host}")
+
     public static String host;// = "http://dingxin.market.alicloudapi.com";
-   // @Value("${aliyun.mms.path}")
+
     public static String path;// = "/dx/sendSms";
-    //@Value("${aliyun.mms.method}")
+
     public static String method;// = "POST";
-   // @Value("${aliyun.mms.templateId}")
+
     public static String templateId;// = "TP1711063";
 }

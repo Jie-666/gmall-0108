@@ -22,6 +22,9 @@
         <module>gmall-sms-interface</module>
         <module>gmall-pms-interface</module>
         <module>gmall-wms-interface</module>
+        <module>gmall-ums-interface</module>
+        <module>gmall-cart-interface</module>
+        <module>gmall-oms-interface</module>
     </modules>
 
     <properties>
@@ -35,10 +38,17 @@
         <joda.version>2.10.5</joda.version>
         <redisson.version>3.12.3</redisson.version>
         <lang3.version>3.9</lang3.version>
+        <httpclient.version>4.5.1</httpclient.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!--httpclient-->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>

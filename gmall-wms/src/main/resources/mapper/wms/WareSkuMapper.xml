@@ -2,4 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.gmall.wms.mapper.WareSkuMapper">
 
+    <select id="checkStock" resultType="com.atguigu.gmall.wms.entity.WareSkuEntity">
+        SELECT * FROM wms_ware_sku WHERE sku_id=#{skuId} and stock - stock_locked >= #{count};
+    </select>
+
+    <update id="lock">
+        UPDATE wms_ware_sku SET stock_locked = stock_locked + #{count} WHERE id = #{id};
+    </update>
+
+    <update id="unlock">
+        UPDATE wms_ware_sku SET stock_locked = stock_locked - #{count} WHERE id = #{id};
+    </update>
 </mapper>

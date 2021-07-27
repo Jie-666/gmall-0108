@@ -1,0 +1,41 @@
+server:
+  port: 18180
+
+spring:
+  profiles:
+    active: dev # 环境设置
+  application:
+    name: service-sms # 服务名
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 # nacos服务地址
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+  zipkin:
+    base-url: http://localhost:9411/
+    sender:
+      type: web
+    discovery-client-enabled: false
+  sleuth:
+    sampler:
+      probability: 1
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.125.128
+
+feign:
+  sentinel:
+    enabled: true
+#阿里云短信
+aliyun:
+  mss:
+    appSecret: "BuEPir0GQBjWdCAYcmpObJk535NDsuQ5"
+    appCode: "68a4a030e0344c51b0e02b032da52273"
+    host: "http://dingxin.market.alicloudapi.com"
+    path: "/dx/sendSms"
+    method: "POST"
+    templateId: TP1711063
